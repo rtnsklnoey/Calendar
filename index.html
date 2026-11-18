@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Timeline Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="toolbar">
+    <h1>ปฏิทินไทม์ไลน์โปรเจ็ค</h1>
+    <div class="toolbar-group">
+      <button class="btn primary" id="btn-add-project">+ เพิ่มโปรเจ็ค</button>
+      <button class="btn primary" id="btn-add-item">+ เพิ่มไทม์ไลน์</button>
+    </div>
+    <div class="toolbar-group">
+      <label>เริ่มเดือน <input type="month" id="range-start"></label>
+      <label>จำนวนเดือน
+        <select id="range-months">
+          <option>4</option><option>6</option><option selected>8</option><option>10</option><option>12</option><option>18</option><option>24</option>
+        </select>
+      </label>
+      <button class="btn" id="btn-today">วันนี้</button>
+    </div>
+    <div class="toolbar-group">
+      <button class="btn" id="btn-export">ส่งออก JSON</button>
+      <label class="btn" for="file-import">นำเข้า JSON</label>
+      <input type="file" id="file-import" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <main>
+    <div class="chart-scroll" id="chart-scroll">
+      <div class="chart" id="chart"></div>
+    </div>
+    <p class="hint">คลิกที่ธงหรือแถบงานเพื่อแก้ไข · ข้อมูลถูกบันทึกไว้ในเบราว์เซอร์นี้ (localStorage)</p>
+    <section class="legend" id="legend"></section>
+  </main>
+
+  <!-- Project dialog -->
+  <dialog id="dlg-project">
+    <form method="dialog" id="form-project">
+      <h2 id="dlg-project-title">โปรเจ็ค</h2>
+      <input type="hidden" name="id">
+      <label>ชื่อโปรเจ็ค <input name="name" required maxlength="80"></label>
+      <div class="row">
+        <label>สี <input type="color" name="color" value="#4a7ab5"></label>
+        <label>วันเริ่มโปรเจ็ค <input type="date" name="start" required></label>
+      </div>
+      <label>SE (คั่นด้วย ,) <input name="se" placeholder="เช่น Tar, Mic"></label>
+      <label>BA (คั่นด้วย ,) <input name="ba" placeholder="เช่น Noey"></label>
+      <label>PM (คั่นด้วย ,) <input name="pm" placeholder="เช่น Peat EN"></label>
+      <label>สถานะ (In Progress) <input name="progress" placeholder="เช่น Dev, waiting for API"></label>
+      <label>งาน (Task) <input name="task" placeholder="เช่น API specification"></label>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger" id="btn-delete-project">ลบโปรเจ็ค</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn" data-close>ยกเลิก</button>
+        <button type="submit" class="btn primary">บันทึก</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Timeline item dialog -->
+  <dialog id="dlg-item">
+    <form method="dialog" id="form-item">
+      <h2 id="dlg-item-title">ไทม์ไลน์</h2>
+      <input type="hidden" name="id">
+      <label>โปรเจ็ค <select name="projectId" required></select></label>
+      <label>เฟส
+        <select name="phase" required>
+          <option>Plan</option><option>Develop</option><option>Update</option><option>Test</option><option>Launch</option>
+        </select>
+      </label>
+      <label>ชื่องาน <input name="label" required maxlength="60" placeholder="เช่น requirement, Dev V1, on Prod"></label>
+      <div class="row">
+        <label>วันเริ่ม <input type="date" name="start" required></label>
+        <label>วันสิ้นสุด <input type="date" name="end" required></label>
+      </div>
+      <p class="form-error" id="item-error"></p>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger" id="btn-delete-item">ลบ</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn" data-close>ยกเลิก</button>
+        <button type="submit" class="btn primary">บันทึก</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
